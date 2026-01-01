@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Roboto } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
@@ -15,9 +15,29 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const roboto = Roboto({
+  weight: ["400", "500", "700"],
+  variable: "--font-roboto",
+  display: "swap",
+  subsets: ["latin"],
+});
+
 export const metadata: Metadata = {
   title: "Note Hub",
-  description: "Create by GoIT",
+  description:
+    "Note Hub — a minimal note-taking app built with Next.js and Zustand.",
+  openGraph: {
+    title: "Note Hub",
+    description:
+      "Note Hub — a minimal note-taking app built with Next.js and Zustand.",
+    url: "https://ac.goit.global/fullstack/react/notehub",
+    images: [
+      {
+        url: "https://ac.goit.global/fullstack/react/notehub-og-meta.jpg",
+        alt: "Note Hub Open Graph Image",
+      },
+    ],
+  },
 };
 
 export default function RootLayout({
@@ -30,7 +50,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${roboto.variable} antialiased`}
       >
         <TanStackProvider>
           <Header />

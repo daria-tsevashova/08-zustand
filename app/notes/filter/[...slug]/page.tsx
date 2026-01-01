@@ -3,6 +3,7 @@ import {
   QueryClient,
   dehydrate,
 } from "@tanstack/react-query";
+import type { Metadata } from "next";
 import { fetchNotes } from "@/lib/api";
 import NotesClient from "./Notes.client";
 import { NoteTag } from "@/types/note";
@@ -27,4 +28,33 @@ export default async function NotesPage({
       <NotesClient tag={tag ?? "all"} />
     </HydrationBoundary>
   );
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug?: string[] };
+}): Promise<Metadata> {
+  const slug = params?.slug;
+  const filter = slug?.[0] ?? "all";
+
+  const title = `Note Hub — Notes (${filter})`;
+  const description = `Note Hub: listing notes filtered by '${filter}'.`;
+  const url = `https://08-zustand-iota-sage.vercel.app/notes/filter/${filter}`;
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      url,
+      images: [
+        {
+          url: "https://ac.goit.global/fullstack/react/notehub-og-meta.jpg",
+          alt: `Note Hub - ${filter}`,
+        },
+      ],
+    },
+  };
 }

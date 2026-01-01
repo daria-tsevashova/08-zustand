@@ -1,4 +1,5 @@
 import { fetchNoteById } from "@/lib/api";
+import type { Metadata } from "next";
 import {
   dehydrate,
   HydrationBoundary,
@@ -25,3 +26,52 @@ const NotesDetails = async ({ params }: NotesDetailsProps) => {
 };
 
 export default NotesDetails;
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { id: string };
+}): Promise<Metadata> {
+  const { id } = params;
+
+  try {
+    const note = await fetchNoteById(id);
+    const title = note?.title ?? `Note ${id}`;
+    const description =
+      (note?.content && note.content.slice(0, 160).trim()) ||
+      "No description available.";
+    const url = `https://08-zustand-iota-sage.vercel.app/notes/${id}`;
+
+    return {
+      title,
+      description,
+      openGraph: {
+        title,
+        description,
+        url,
+        images: [
+          {
+            url: "https://ac.goit.global/fullstack/react/notehub-og-meta.jpg",
+            alt: title,
+          },
+        ],
+      },
+    };
+  } catch (err) {
+    return {
+      title: "Note Hub — Note",
+      description: "Note details could not be loaded.",
+      openGraph: {
+        title: "Note Hub — Note",
+        description: "Note details could not be loaded.",
+        url: `https://08-zustand-iota-sage.vercel.app/notes/${params.id}`,
+        images: [
+          {
+            url: "https://ac.goit.global/fullstack/react/notehub-og-meta.jpg",
+            alt: "Note Hub",
+          },
+        ],
+      },
+    };
+  }
+}
