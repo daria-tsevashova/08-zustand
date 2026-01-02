@@ -23,9 +23,6 @@ export const useNoteDraftStore = create<NoteDraftStore>()(
     }),
     {
       name: "note-draft-storage",
-      storage: (typeof window !== "undefined"
-        ? localStorage
-        : undefined) as unknown as any,
     }
   )
 );

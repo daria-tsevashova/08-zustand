@@ -33,10 +33,10 @@ export default async function NotesPage({
 export async function generateMetadata({
   params,
 }: {
-  params: { slug?: string[] };
+  params: Promise<{ slug: string[] }>;
 }): Promise<Metadata> {
-  const slug = params?.slug;
-  const filter = slug?.[0] ?? "all";
+  const { slug } = await params;
+  const filter = slug?.[0] ?? "All";
 
   const title = `Note Hub — Notes (${filter})`;
   const description = `Note Hub: listing notes filtered by '${filter}'.`;
